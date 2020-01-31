@@ -4,11 +4,11 @@ const inquirer = require("inquirer");
 const util = require("util");
 const convertHTMLToPDF = require("pdf-puppeteer");
 
-
-// const writeFileAsync = util.promisify(fs.writeFile);
 const convertAsync = util.promisify(convertHTMLToPDF);
 
+
 function promptUser() {
+    console.log("promptUser");
     return inquirer.prompt([
         {
             type: "input",
@@ -23,17 +23,71 @@ function promptUser() {
     ]);
 }
 
-function githubQuery(data) {
-    const queryURL = `https://api.github.com/users/${data.username}`;
-    
-    axios
-        .get(queryURL)
-        .then(function(res) {
-            var repoArr = res.data;
-            console.log(res);
-        })
 
+function starQuery(data) {
+    console.log("starQuery");
+    const queryURL = `https://api.github.com/users/${data.username}/starred`;
+    return axios
+        .get(queryURL)
+        
 }
+
+function githubQuery(data) {
+    console.log("githubQuery");
+    const queryURL = `https://api.github.com/users/${data.username}`;
+    return axios
+        .get(queryURL)
+        
+}
+
+
+
+
+// pdf-puppeteer:
+var callback = function (pdf) {
+    // do something with the PDF like send it as the response
+    // res.setHeader("Content-Type", "application/pdf");
+    // res.send(pdf);
+    fs.writeFile("newTestpdf.pdf", pdf, "utf8", function(err) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("new pdf success!");
+        
+    })
+}
+var options = {
+    width: "8.5in",
+    height: "11in",
+    
+    // format: "Letter",
+    printBackground: true,
+    margin: {
+        top: "0px",
+        right: "0px",
+        bottom: "0px",
+        left: "0px"
+    }
+}
+
+async function init() {
+    console.log("init called");
+    try {
+        const data = await promptUser()
+        
+        const response  = await githubQuery(data);
+        const star  = await starQuery(data);
+
+        const html = generateHTML(data, response, star);
+
+        convertAsync(html, callback, options);
+        
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+init();
 
 const colors = {
     green: {
@@ -62,7 +116,11 @@ const colors = {
     }
   };
 
-function generateHTML(data) {
+
+function generateHTML(data, response, star) {
+    console.log(response.data)
+    // console.log(star.data)
+    
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -233,14 +291,14 @@ function generateHTML(data) {
             <div class="container-fluid">
                 <div class="row wrapper">
                     <div class="photo-header">
-                        <img src="GithubPic1.4.jpg" alt="profile picture"></img>    
+                        <img src="${response.data.avatar_url}" alt="profile picture"></img>    
                         <h1>Hi!</h1>    
-                        <h2>My name is Patrick Dunn!</h2>    
-                        <h5>Currently studying coding at UCONN Hartford</h5>
+                        <h1>My name is ${response.data.name}!</h1>    
+                        <h3>Currently at ${response.data.company}</h3>
                         <div class="row links-nav">
-                            <div class="col nav-link"><a>Connecticut</a></div>
-                            <div class="col nav-link"><a>Github</a></div>
-                            <div class="col nav-link"><a>Blog</a></div>
+                            <div class="col nav-link"><a href="http://maps.google.com/maps?q${response.data.location}" target="_blank"><h3>${response.data.location}</h3></a></div>
+                            <div class="col nav-link"><a href="${response.data.html_url}" target="_blank"><h3>Github</h3></a></div>
+                            <div class="col nav-link"><a href="${response.data.blog}" target="_blank"><h3>Blog</h3></a></div>
                         </div>
                     </div>
                 </div>
@@ -248,28 +306,29 @@ function generateHTML(data) {
                     <div class="col">
                         <div class="row">
                             <div class="col">
-                                <h3>I build roofs and solve Rubik's cubes</h3>
+                                <h3>${response.data.bio}</h3>
                             </div>
                             
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col card">
                                 <h3>Public Repositories</h3>
-                                <h4>100</h4>
+                                <h3>${response.data.public_repos}</h3>
                             </div>
                             <div class="col card">
                                 <h3>Followers</h3>
-                                <h4>100</h4>
+                                <h3>${response.data.followers}</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col card">
                                 <h3>Github Stars</h3>
-                                <h4>100</h4>
+                                <h3>${star.data.length}</h3>
                             </div>
                             <div class="col card">
                                 <h3>Following</h3>
-                                <h4>100</h4>
+                                <h3>${response.data.following}</h3>
                             </div>
                         </div>
                     </div>
@@ -287,47 +346,9 @@ function generateHTML(data) {
         </body>
     </html>
     `;
+    
 } 
 
-
-
-// pdf-puppeteer:
-
- 
-var callback = function (pdf) {
-    // do something with the PDF like send it as the response
-    // res.setHeader("Content-Type", "application/pdf");
-    // res.send(pdf);
-    fs.writeFile("newTestpdf.pdf", pdf, "utf8", function(err) {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("new pdf success!");
-    })
-}
-var options = {
-    format: "Letter",
-    printBackground: true
-}
-
-async function init() {
-    console.log("init called");
-    try {
-        const data = await promptUser() 
-        
-        await githubQuery(data);
-
-        const html = generateHTML(data);
-
-        await convertAsync(html, callback, options);
-
-        console.log("successfully wrote pdf")
-    } catch(err) {
-        console.log(err);
-    }
-}
-
-init();
 
 
 
