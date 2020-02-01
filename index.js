@@ -24,6 +24,7 @@ function promptUser() {
 }
 
 function starQuery(data) {
+    console.log("loading...");
     // console.log("starQuery");
     const queryURL = `https://api.github.com/users/${data.username}/starred`;
     return axios
@@ -32,6 +33,7 @@ function starQuery(data) {
 }
 
 function githubQuery(data) {
+    console.log("loading...");
     // console.log("githubQuery");
     const queryURL = `https://api.github.com/users/${data.username}`;
     return axios
@@ -109,7 +111,8 @@ const colors = {
 };
 
 function generateHTML(data, response, star) {
-    console.log(response.data)
+    console.log("loading...");
+    // console.log(response.data)
     // console.log(star.data)
     
     return `
