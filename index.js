@@ -8,7 +8,7 @@ const convertAsync = util.promisify(convertHTMLToPDF);
 
 
 function promptUser() {
-    console.log("promptUser");
+    // console.log("promptUser");
     return inquirer.prompt([
         {
             type: "input",
@@ -23,9 +23,8 @@ function promptUser() {
     ]);
 }
 
-
 function starQuery(data) {
-    console.log("starQuery");
+    // console.log("starQuery");
     const queryURL = `https://api.github.com/users/${data.username}/starred`;
     return axios
         .get(queryURL)
@@ -33,34 +32,25 @@ function starQuery(data) {
 }
 
 function githubQuery(data) {
-    console.log("githubQuery");
+    // console.log("githubQuery");
     const queryURL = `https://api.github.com/users/${data.username}`;
     return axios
         .get(queryURL)
         
 }
 
-
-
-
 // pdf-puppeteer:
 var callback = function (pdf) {
-    // do something with the PDF like send it as the response
-    // res.setHeader("Content-Type", "application/pdf");
-    // res.send(pdf);
-    fs.writeFile("newTestpdf.pdf", pdf, "utf8", function(err) {
+    
+    fs.writeFile("developerPDF.pdf", pdf, "utf8", function(err) {
         if (err) {
             return console.log(err);
         }
         console.log("new pdf success!");
-        
     })
 }
 var options = {
-    width: "8.5in",
-    height: "11in",
-    
-    // format: "Letter",
+    format: "Letter",
     printBackground: true,
     margin: {
         top: "0px",
@@ -71,11 +61,12 @@ var options = {
 }
 
 async function init() {
-    console.log("init called");
+    // console.log("init called");
     try {
         const data = await promptUser()
         
         const response  = await githubQuery(data);
+
         const star  = await starQuery(data);
 
         const html = generateHTML(data, response, star);
@@ -84,6 +75,7 @@ async function init() {
         
     } catch(err) {
         console.log(err);
+        console.log("Invlaid username/color. Please try again.");
     }
 }
 
@@ -114,8 +106,7 @@ const colors = {
       headerColor: "white",
       photoBorderColor: "white"
     }
-  };
-
+};
 
 function generateHTML(data, response, star) {
     console.log(response.data)
@@ -348,88 +339,3 @@ function generateHTML(data, response, star) {
     `;
     
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// var repoNames = [];
-
-// inquirer
-//     .prompt({
-//         message:"Enter your GitHub username",
-//         name: "username"
-//     })
-//     .then(function({ username }) {
-//         const queryURL = `https://api.github.com/users${username}/repos?per_page=100`;
-
-//         axios
-//             .get(queryURL)
-//             .then(function(response) {
-//                 var repoArr = response.data;
-//                 console.log(repoArr)
-
-//                 repoArr.forEach(function(repo) {
-//                     var name = repo.name
-//                     repoNames.push(name);
-//                 })
-//                 console.log(repoNames);
-
-//                 const repoNamesStr = repoNames.join("\n")
-
-//                 fs.writeFile("repos.txt", repoNamesStr, function(err) {
-//                     if (err) {
-//                         throw err;
-//                     }
-//                 })
-//             })
-//     });
-
-
-
-
-
-
-
-// starter js start ---------------------
-// const questions = [
-  
-// ];
-
-// function writeToFile(fileName, data) {
- 
-// }
-
-// function init() {
-
-// }
-
-// init();
-// starter js end ---------------------
