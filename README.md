@@ -19,11 +19,19 @@ Finally, the application runs the HTML document through pdf-puppeteer: a node pa
 
 ### GIF'S
 
+![alt_text](https://github.com/knightmac19/DevProfile/blob/master/devScreenshot1.png)
+
+![alt_text](https://github.com/knightmac19/DevProfile/blob/master/devScreenshot2.png)
+
+
+
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/GIF1.mp4)
 
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/GIF2.mp4)
 
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/GIF3.mp4)
+
+
 
 ### Tutorials / Resources
 
