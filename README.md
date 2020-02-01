@@ -1,5 +1,7 @@
 # DevProfile
 
+https://github.com/knightmac19/DevProfile/blob/master/developerPDF.pdf
+
 ## User-Story
 - AS A developer
 - I WANT TO quickly and dynamically create PDF's introducing my team members
@@ -22,8 +24,6 @@ Finally, the application runs the HTML document through pdf-puppeteer: a node pa
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/devScreenshot1.png)
 
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/devScreenshot2.png)
-
-
 
 ![alt_text](https://github.com/knightmac19/DevProfile/blob/master/GIF1.mp4)
 
