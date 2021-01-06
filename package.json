@@ -1,0 +1,27 @@
+{
+  "name": "DevProfile",
+  "version": "1.0.0",
+  "description": "https://github.com/knightmac19/DevProfile/blob/master/developerPDF.pdf",
+  "main": "index.js",
+  "dependencies": {
+    "axios": ">=0.21.1",
+    "fs": "^0.0.1-security",
+    "inquirer": "^7.0.4",
+    "pdf-puppeteer": "^1.1.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knightmac19/DevProfile.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knightmac19/DevProfile/issues"
+  },
+  "homepage": "https://github.com/knightmac19/DevProfile#readme"
+}
